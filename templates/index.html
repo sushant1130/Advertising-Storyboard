@@ -1,0 +1,54 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Advertisement Storyboard Generator</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
+        img { max-width: 500px; margin: 1rem auto; display: block; }
+        .btn { padding: 10px 20px; margin: 10px; font-size: 16px; cursor: pointer; }
+        .hidden { display: none; }
+        form { margin-top: 20px; }
+        textarea { width: 100%; max-width: 500px; height: 80px; }
+    </style>
+</head>
+<body>
+
+<h1>AI Advertisement Storyboard Generator</h1>
+
+{% if image and caption %}
+    <img src="{{ image }}" alt="Generated Storyboard">
+    <h3>{{ caption }}</h3>
+
+    <!-- Download Storyboard Button -->
+    <a class="btn" href="{{ url_for('download', filename=zip_file) }}" download>📦 Download Full Storyboard</a>
+
+    <!-- Regenerate Storyboard with Feedback -->
+    <form method="POST">
+        <input type="hidden" name="prompt" value="{{ original_prompt }}">
+        <textarea name="feedback" placeholder="Enter what to improve in the storyboard..."></textarea>
+        <br>
+        <button class="btn" type="submit">🔁 Regenerate Storyboard with Feedback</button>
+    </form>
+
+    <!-- Start Over -->
+    <form method="GET">
+        <button class="btn" type="submit">🔄 Create New Storyboard</button>
+    </form>
+
+{% else %}
+    <!-- New storyboard generation form -->
+    <form method="POST" enctype="multipart/form-data">
+        <textarea name="prompt" placeholder="Enter your ad idea or product description..." required></textarea><br><br>
+        <label>Select an image (optional):</label><br>
+        <input type="file" name="image"><br><br>
+        <button class="btn" type="submit" name="action" value="generate_text_only">✨ Generate from Text Only</button>
+        <button class="btn" type="submit" name="action" value="generate_with_image">🖼️ Generate with Image</button>
+    </form>
+{% endif %}
+
+</body>
+</html>
+
